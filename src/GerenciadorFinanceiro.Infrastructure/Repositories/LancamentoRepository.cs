@@ -1,0 +1,89 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using GerenciadorFinanceiro.Domain.Entities;
+using GerenciadorFinanceiro.Domain.Interfaces;
+using GerenciadorFinanceiro.Infrastructure.Context;
+using GerenciadorFinanceiro.Domain.Models;
+
+namespace GerenciadorFinanceiro.Infrastructure.Repositories
+{
+    public class LancamentoRepository : ILancamentoRepository
+    {
+        private readonly FinanceiroDbContext _context;
+
+        public LancamentoRepository(FinanceiroDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AdicionarAsync(Lancamento lancamento)
+        {
+            await _context.Lancamentos.AddAsync(lancamento);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Lancamento>> ObterTodosAsync()
+        {
+            return await _context.Lancamentos
+                .Include(x => x.Categoria)
+                .ToListAsync();
+        }
+
+        public async Task<Lancamento?> ObterPorIdAsync(Guid id)
+        {
+            return await _context.Lancamentos
+                .Include(x => x.Categoria)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<Lancamento>> ObterPorPeriodoAsync(DateTime inicio, DateTime fim)
+        {
+            var datainicio = inicio.Date;
+            var dataFim = fim.Date.AddDays(1).AddTicks(-1);
+                
+            return await _context.Lancamentos
+                .Include(x => x.Categoria)
+                .Where(x => x.DataLancamento >= datainicio && x.DataLancamento < dataFim)
+                .ToListAsync();
+        }
+
+        public async Task RemoveAsync(Lancamento lancamento)
+        {
+            _context.Lancamentos.Remove(lancamento);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task EditAsync(Lancamento lancamento)
+        {
+            _context.Lancamentos.Update(lancamento);
+            return _context.SaveChangesAsync();
+        }
+
+        public async Task<ResumoFinanceiro> ObterResumoAsync()
+        {
+            var receitas = await _context.Lancamentos
+                 .Where(x => x.Tipo == Domain.Entities.TipoLancamento.Receita)
+                 .SumAsync(x => x.Valor);
+
+            var despesas = await _context.Lancamentos
+                .Where(x => x.Tipo == Domain.Entities.TipoLancamento.Despesa)
+                .SumAsync(x => x.Valor);
+
+            var saldo = receitas - despesas;
+
+            return new ResumoFinanceiro(receitas, despesas, saldo);
+        }
+
+        public async Task<IEnumerable<RelatorioCategoria>> ObterTotaisCategoriaAsync()
+        {
+            return await _context.Lancamentos
+                .Include(x => x.Categoria)
+                .GroupBy(x => x.Categoria.Nome)
+                .Select(g => new RelatorioCategoria(g.Key, g.Sum(x => x.Valor)))
+                .ToListAsync();
+        }
+    }
+}

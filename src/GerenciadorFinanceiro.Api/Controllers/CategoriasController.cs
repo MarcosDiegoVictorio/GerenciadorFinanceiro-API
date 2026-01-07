@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using GerenciadorFinanceiro.Domain.Entities;
 using GerenciadorFinanceiro.Infrastructure.Context;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GerenciadorFinanceiro.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CategoriasController : ControllerBase
     {
         private readonly FinanceiroDbContext _context;

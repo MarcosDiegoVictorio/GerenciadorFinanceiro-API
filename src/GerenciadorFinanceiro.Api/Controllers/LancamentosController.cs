@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GerenciadorFinanceiro.Domain.Interfaces;
 using GerenciadorFinanceiro.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GerenciadorFinanceiro.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class LancamentosController : ControllerBase
     {
         private readonly ILancamentoRepository _repository;

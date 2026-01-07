@@ -13,12 +13,14 @@ namespace GerenciadorFinanceiro.Infrastructure.Context
         // Define a tabela de Lançamentos
         public DbSet<Lancamento> Lancamentos { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Garante que o Id é a chave primária
             modelBuilder.Entity<Lancamento>().HasKey(x => x.Id);
             modelBuilder.Entity<Categoria>().HasKey(x => x.Id);
+            modelBuilder.Entity<Usuario>().HasKey(x => x.Id);
 
             modelBuilder.Entity<Lancamento>()
                 .HasOne(l => l.Categoria)

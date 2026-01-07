@@ -1,7 +1,11 @@
+using GerenciadorFinanceiro.Api.Services;
 using GerenciadorFinanceiro.Domain.Interfaces;
-using GerenciadorFinanceiro.Infrastructure.Repositories;
 using GerenciadorFinanceiro.Infrastructure.Context;
+using GerenciadorFinanceiro.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,29 @@ builder.Services.AddDbContext<FinanceiroDbContext>(options =>
 // Como o Repositório pede o Contexto no construtor, o passo 1 precisa existir.
 builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
 
+builder.Services.AddScoped<TokenService>();
+
+// 2. Configura a Autenticação JWT
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:ChaveSecreta"]);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
 var app = builder.Build();
 
 // Configura o pipeline de requisições HTTP.
@@ -30,6 +57,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

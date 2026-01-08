@@ -16,7 +16,7 @@ namespace GerenciadorFinanceiro.Api.Controllers
         {
             _repository = repository;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> ObterTodosLancamentos()
         {
@@ -82,7 +82,12 @@ namespace GerenciadorFinanceiro.Api.Controllers
             try
             {
                 // Verifica se a categoria existe antes de criar (opcional, mas bom)
-                // var existe = await _repository.CategoriaExisteAsync(request.CategoriaId); // Precisaria implementar
+                var existe = await _repository.CategoriaExisteAsync(request.CategoriaId);
+
+                if (!existe.Any())
+                {
+                    return BadRequest("Categoria inválida ou não existente");
+                }
 
                 // Aqui transformamos o DTO (dados da tela) na Entidade (regras de negócio)
                 var lancamento = new Lancamento(request.Descricao, request.Valor, request.Tipo, request.CategoriaId);

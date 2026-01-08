@@ -21,6 +21,21 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
 
         public async Task AdicionarAsync(Lancamento lancamento)
         {
+            var maximoDespesasNoMes = await _context.Categorias
+                .Where(c => c.Id == lancamento.CategoriaId)
+                .Select(c => c.OrcamentoMensal)
+                .FirstOrDefaultAsync();
+
+            var totalDespesasNoMes = await _context.Lancamentos
+                .Where(l => l.CategoriaId == lancamento.CategoriaId &&
+                            l.Tipo == TipoLancamento.Despesa &&
+                            l.DataLancamento.Month == lancamento.DataLancamento.Month &&
+                            l.DataLancamento.Year == lancamento.DataLancamento.Year)
+                .SumAsync(l => l.Valor);
+
+            if (totalDespesasNoMes + lancamento.Valor > maximoDespesasNoMes)
+                throw new Exception("O orçamento mensal para esta categoria foi excedido.");
+
             await _context.Lancamentos.AddAsync(lancamento);
             await _context.SaveChangesAsync();
         }
@@ -83,6 +98,13 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
                 .Include(x => x.Categoria)
                 .GroupBy(x => x.Categoria.Nome)
                 .Select(g => new RelatorioCategoria(g.Key, g.Sum(x => x.Valor)))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Categoria>> CategoriaExisteAsync(Guid categoriaId)
+        {
+            return await _context.Categorias
+                .Where(x => x.Id == categoriaId)
                 .ToListAsync();
         }
     }

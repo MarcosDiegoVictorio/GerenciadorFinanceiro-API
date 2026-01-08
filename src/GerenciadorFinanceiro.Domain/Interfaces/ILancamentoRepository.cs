@@ -49,5 +49,6 @@ namespace GerenciadorFinanceiro.Domain.Interfaces
 
         Task<ResumoFinanceiro> ObterResumoAsync();
         Task<IEnumerable<RelatorioCategoria>> ObterTotaisCategoriaAsync();
+        Task<IEnumerable<Categoria>> CategoriaExisteAsync(Guid categoriaId);
     }
 }

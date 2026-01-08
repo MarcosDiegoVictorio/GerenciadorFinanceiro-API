@@ -20,8 +20,8 @@ namespace GerenciadorFinanceiro.Tests
             using (var context = new FinanceiroDbContext(options))
             {
                 // Precisamos de uma categoria fake para não dar erro
-                var catAlimentacao = new Categoria("Alimentacao");
-                var catSalario = new Categoria("Salario");
+                var catAlimentacao = new Categoria("Alimentacao",1500);
+                var catSalario = new Categoria("Salario",7527);
 
                 context.Categorias.AddRange(catAlimentacao, catSalario);
                 await context.SaveChangesAsync();

@@ -18,14 +18,14 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObterTodos()
+        public async Task<IActionResult> ObterTodosLancamentos()
         {
             var lancamentos = await _repository.ObterTodosAsync();
             return Ok(lancamentos);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ObterById([FromRoute] Guid id)
+        public async Task<IActionResult> ObterLancamentoById([FromRoute] Guid id)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpGet("periodo")]
-        public async Task<IActionResult> ObterByDateTime([FromQuery] DateTime inicio, [FromQuery] DateTime fim)
+        public async Task<IActionResult> ObterLancamentoByDateTime([FromQuery] DateTime inicio, [FromQuery] DateTime fim)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Adicionar([FromBody] CriarLancamentoRequest request)
+        public async Task<IActionResult> AdicionarLancamento([FromBody] CriarLancamentoRequest request)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Remover([FromRoute] Guid id)
+        public async Task<IActionResult> RemoverLancamento([FromRoute] Guid id)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Editar([FromRoute] Guid id, [FromBody] CriarLancamentoRequest request)
+        public async Task<IActionResult> EditarLancamento([FromRoute] Guid id, [FromBody] CriarLancamentoRequest request)
         {
             try
             {

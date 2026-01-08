@@ -93,4 +93,20 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// --- BLOCO DE AUTO-MIGRAÇÃO ---
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<FinanceiroDbContext>();
+    try
+    {
+        // Isso aplica qualquer migration pendente automaticamente ao iniciar
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        // Se der erro, só loga (útil para debug)
+        Console.WriteLine($"Erro ao aplicar migrações: {ex.Message}");
+    }
+}
+
 app.Run();

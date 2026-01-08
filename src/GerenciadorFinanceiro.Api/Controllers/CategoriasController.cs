@@ -28,12 +28,12 @@ namespace GerenciadorFinanceiro.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] CriarCategoriaRequest request)
         {
-            var categoria = new Categoria(request.Nome);
+            var categoria = new Categoria(request.Nome, request.OrcamentoMensal);
             await _context.Categorias.AddAsync(categoria);
             await _context.SaveChangesAsync();
             return Created("", categoria);
         }
     }
 
-    public record CriarCategoriaRequest(string Nome);
+    public record CriarCategoriaRequest(string Nome, decimal OrcamentoMensal);
 }

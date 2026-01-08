@@ -2,11 +2,6 @@
 using GerenciadorFinanceiro.Domain.Interfaces;
 using GerenciadorFinanceiro.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GerenciadorFinanceiro.Infrastructure.Repositories
 {
@@ -16,14 +11,13 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
 
         public CategoriaRepository(FinanceiroDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public async Task<IEnumerable<Categoria>> ObterTodosAsync()
         {
             return await _context.Categorias.ToListAsync();
         }
-
         public async Task<Categoria?> ObterPorIdAsync(Guid id)
         {
             return await _context.Categorias

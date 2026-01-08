@@ -1,3 +1,4 @@
+using GerenciadorFinanceiro.Api.Middlewares;
 using GerenciadorFinanceiro.Api.Services;
 using GerenciadorFinanceiro.Domain.Interfaces;
 using GerenciadorFinanceiro.Infrastructure.Context;
@@ -44,18 +45,24 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// 1. Primeiro registramos o Contexto do Banco
+// Primeiro registramos o Contexto do Banco
 // Isso ensina o .NET a criar o "FinanceiroDbContext" usando a string de conexão do appsettings.json
 builder.Services.AddDbContext<FinanceiroDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Depois registramos o Repositório
+// Depois registramos o Repositório
 // Como o Repositório pede o Contexto no construtor, o passo 1 precisa existir.
 builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<TokenService>();
 
-// 2. Configura a Autenticação JWT
+
+// Configura a Autenticação JWT
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:ChaveSecreta"]);
 
 builder.Services.AddAuthentication(x =>
@@ -84,6 +91,8 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

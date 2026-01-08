@@ -1,5 +1,4 @@
 ﻿using GerenciadorFinanceiro.Domain.Entities;
-using GerenciadorFinanceiro.Domain.Models;
 
 namespace GerenciadorFinanceiro.Domain.Interfaces
 {

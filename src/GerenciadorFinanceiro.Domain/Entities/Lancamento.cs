@@ -7,7 +7,8 @@ namespace GerenciadorFinanceiro.Domain.Entities
     public enum TipoLancamento
     {
         Receita = 1,
-        Despesa = 2
+        Despesa = 2,
+        Investimento = 3
     }
 
     public class Lancamento

@@ -22,12 +22,9 @@
                 throw new Exception("O orçamento mensal não pode ser negativo.");
         }
 
-        public void Atualizar(string nome, decimal orcamentoMensal)
+        public void Atualizar(decimal orcamentoMensal)
         {
-            Nome = nome;
             OrcamentoMensal = orcamentoMensal;
-            if (string.IsNullOrWhiteSpace(nome))
-                throw new Exception("O nome da categoria é obrigatório.");
 
             if (orcamentoMensal < 0)
                 throw new Exception("O orçamento mensal não pode ser negativo.");

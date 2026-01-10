@@ -1,4 +1,5 @@
 ﻿using GerenciadorFinanceiro.Domain.Entities;
+using GerenciadorFinanceiro.Domain.Exceptions;
 using GerenciadorFinanceiro.Domain.Interfaces;
 using GerenciadorFinanceiro.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,7 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
             var ExisteLancamento = _context.Lancamentos.Any(l => l.CategoriaId == categoria.Id);
             if (ExisteLancamento)
             {
-                throw new Exception("Não é possível excluir a categoria pois existem lançamentos associados a ela.");
+                throw new DomainException("Não é possível excluir a categoria pois existem lançamentos associados a ela.");
             }
 
             _context.Categorias.Remove(categoria);

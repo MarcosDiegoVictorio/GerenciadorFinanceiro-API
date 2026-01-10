@@ -107,5 +107,11 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
                 .Where(x => x.Id == categoriaId)
                 .ToListAsync();
         }
+
+        public async Task<Lancamento?> ObterLancamentoPorTipo(TipoLancamento tipo)
+        {
+            return await _context.Lancamentos
+                .FirstOrDefaultAsync(l => l.Tipo == tipo);
+        }
     }
 }

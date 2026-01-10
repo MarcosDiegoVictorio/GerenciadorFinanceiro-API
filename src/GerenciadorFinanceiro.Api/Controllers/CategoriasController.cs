@@ -47,14 +47,14 @@ namespace GerenciadorFinanceiro.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditarCategoria([FromRoute] Guid id, [FromBody] CriarCategoriaRequest request)
+        public async Task<IActionResult> EditarCategoria([FromRoute] Guid id, [FromBody] EditarCategoriaRequest request)
         {
             var categoria = await _repository.ObterPorIdAsync(id);
             if (categoria == null)
             {
                 return NotFound("Categoria não encontrada");
             }
-            categoria.Atualizar(request.Nome, request.OrcamentoMensal);
+            categoria.Atualizar(request.OrcamentoMensal);
 
             await _repository.EditAsync(categoria);
             return Ok(categoria);
@@ -74,4 +74,5 @@ namespace GerenciadorFinanceiro.Api.Controllers
     }
 
     public record CriarCategoriaRequest(string Nome, decimal OrcamentoMensal);
+    public record EditarCategoriaRequest(decimal OrcamentoMensal);
 }

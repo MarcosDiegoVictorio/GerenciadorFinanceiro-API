@@ -76,6 +76,24 @@ namespace GerenciadorFinanceiro.Api.Controllers
             return Ok(relatorio);
         }
 
+        [HttpGet("tipo")]
+        public async Task<IActionResult> ObterLancamentoPorTipo([FromQuery] TipoLancamento tipo)
+        {
+            try
+            {
+                var lancamento = await _repository.ObterLancamentoPorTipo(tipo);
+                if (lancamento == null)
+                {
+                    return NotFound("Não existem lançamentos para este tipo de lançamento");
+                }
+                return Ok(lancamento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> AdicionarLancamento([FromBody] CriarLancamentoRequest request)
         {

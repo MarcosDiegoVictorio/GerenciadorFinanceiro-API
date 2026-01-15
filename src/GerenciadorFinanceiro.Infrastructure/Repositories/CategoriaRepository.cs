@@ -17,7 +17,8 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
 
         public async Task<IEnumerable<Categoria>> ObterTodosAsync()
         {
-            return await _context.Categorias.ToListAsync();
+            var categorias = await _context.Categorias.ToListAsync();
+            return categorias;
         }
         public async Task<Categoria?> ObterPorIdAsync(Guid id)
         {
@@ -28,6 +29,7 @@ namespace GerenciadorFinanceiro.Infrastructure.Repositories
         public async Task AdicionarAsync(Categoria categoria)
         {
             await _context.Categorias.AddAsync(categoria);
+            await _context.SaveChangesAsync();
         }
 
         public Task EditAsync(Categoria categoria)

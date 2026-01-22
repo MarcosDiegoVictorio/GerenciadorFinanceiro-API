@@ -1,9 +1,22 @@
+<div align="center">
+
 # 🏦 Financeiro API - Backend
 
-API RESTful desenvolvida em **.NET 8** para gerenciar dados financeiros pessoais. Este projeto serve como o backend para a aplicação web "Minha Carteira", fornecendo endpoints para transações, categorias e dados analíticos.
+![.NET 8](https://img.shields.io/badge/.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+
+<p>
+  API RESTful desenvolvida em <strong>.NET 8</strong> para gerenciar dados financeiros pessoais. Este projeto serve como o backend para a aplicação web "Minha Carteira", fornecendo endpoints para transações, categorias e dados analíticos.
+</p>
 
 🔗 **Base URL (Produção):** `https://financeiro-api-pessoal.onrender.com/api`
 📄 **Documentação Swagger:** `https://financeiro-api-pessoal.onrender.com/swagger`
+
+</div>
+
+---
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -27,7 +40,7 @@ A API fornece recursos para:
 ## 🔌 Endpoints Principais
 
 | Método | Rota | Descrição |
-|---|---|---|
+| :--- | :--- | :--- |
 | `GET` | `/api/Lancamentos` | Lista todas as movimentações |
 | `POST` | `/api/Lancamentos` | Cria uma nova movimentação |
 | `PUT` | `/api/Lancamentos/{id}` | Atualiza uma movimentação existente |
@@ -36,6 +49,8 @@ A API fornece recursos para:
 | `POST` | `/api/Categorias` | Cria uma nova categoria |
 
 *(Para ver todos os detalhes e testar as rotas, acesse o [Swagger](https://financeiro-api-pessoal.onrender.com/swagger))*
+
+---
 
 ## 🛠️ Como rodar localmente
 
@@ -47,46 +62,53 @@ A API fornece recursos para:
 
 1. **Clone o repositório**
    ```bash
-   git clone [https://github.com/MarcosDiegoVictorio/GerenciadorFinanceiro-API.git](https://github.com/MarcosDiegoVictorio/GerenciadorFinanceiro-API.git)
+   git clone https://github.com/MarcosDiegoVictorio/GerenciadorFinanceiro-API.git
    cd backend
+   ```
 
-2. **Configure o Banco de Dados No arquivo appsettings.json, verifique a string de conexão:**
-   ```JSON
+2. **Configure o Banco de Dados**
+   No arquivo `appsettings.json`, verifique a string de conexão:
+   ```json
    "ConnectionStrings": {
-        "DefaultConnection": "Server=localhost;Database=MinhaCarteiraDB;Trusted_Connection=True;TrustServerCertificate=True;"
-    }
+       "DefaultConnection": "Server=localhost;Database=MinhaCarteiraDB;Trusted_Connection=True;TrustServerCertificate=True;"
+   }
+   ```
 
-3. **Aplique as Migrations Crie o banco de dados e as tabelas rodando o comando:**
+3. **Aplique as Migrations**
+   Crie o banco de dados e as tabelas rodando o comando:
    ```bash
    dotnet ef database update
+   ```
 
 4. **Execute o projeto**
    ```bash
    dotnet run
-
-**A API estará disponível em http://localhost:5000 (ou porta similar).**
+   ```
+   **A API estará disponível em `http://localhost:5000` (ou porta similar).**
 
 ### 🐳 Rodando com Docker
 
-1. 
+```bash
+docker build -t financeiro-api .
+docker run -p 5000:8080 financeiro-api
+```
 
-  ```bash
-  docker build -t financeiro-api .
-  docker run -p 5000:8080 financeiro-api
+---
 
 ### 📦 Estrutura do Projeto
 **O projeto segue uma arquitetura limpa e organizada:**
 
- .Controllers: Pontos de entrada da API (Endpoints).
-
- .Models: Entidades do banco de dados (Lancamento, Categoria).
-
- .Data: Contexto do Entity Framework e configurações de DB.
-
- .DTOs: Objetos de transferência de dados (Requests/Responses).
+- **.Controllers:** Pontos de entrada da API (Endpoints).
+- **.Models:** Entidades do banco de dados (Lancamento, Categoria).
+- **.Data:** Contexto do Entity Framework e configurações de DB.
+- **.DTOs:** Objetos de transferência de dados (Requests/Responses).
 
 ### 🤝 Integração com Frontend
-**Este backend foi projetado para funcionar em conjunto com o frontend React: https://github.com/MarcosDiegoVictorio/Web-Financeira**
+**Este backend foi projetado para funcionar em conjunto com o frontend React:**
+👉 **[https://github.com/MarcosDiegoVictorio/Web-Financeira](https://github.com/MarcosDiegoVictorio/Web-Financeira)**
+
+<div align="center">
 
 #### Desenvolvido por Marcos Diego Victorio
 
+</div>
